@@ -1,4 +1,3 @@
-Iraq Mohammed, [10/21/2025 9:13 PM]
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,6 +5,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مختبر الرقابة الدوائية</title>
     <style>
+        /* أنماط CSS الأساسية */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
@@ -157,10 +157,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
         }
         
         .lab-1 { background-color: var(--lab1-color); color: white; }
-        .
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-lab-2 { background-color: var(--lab2-color); color: white; }
+        .lab-2 { background-color: var(--lab2-color); color: white; }
         .lab-3 { background-color: var(--lab3-color); color: white; }
         
         .logout-btn {
@@ -325,9 +322,7 @@ lab-2 { background-color: var(--lab2-color); color: white; }
         }
         
         .tab-content {
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-display: none;
+            display: none;
         }
         
         .tab-content.active {
@@ -409,17 +404,15 @@ display: none;
                     <label for="password">كلمة المرور</label>
                     <input type="password" id="password" required>
                 </div>
-                <div class="form-group">
-                    <label for="userType">نوع المستخدم</label>
-                    <select id="userType" required>
-                        <option value="">اختر نوع المستخدم</option>
-                        <option value="doctor">دكتور</option>
-                        <option value="self">ذاتية</option>
-                        <option value="admin">مدير النظام</option>
-                    </select>
-                </div>
                 <button type="submit" class="btn btn-block">دخول</button>
             </form>
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                <h4 style="margin-bottom: 10px;">بيانات الدخول للتجربة:</h4>
+                <p><strong>مدير النظام:</strong> admin / admin123</p>
+                <p><strong>دكتور 1:</strong> doctor1 / doctor123</p>
+                <p><strong>دكتور 2:</strong> doctor2 / doctor123</p>
+                <p><strong>ذاتية:</strong> self / self123</p>
+            </div>
         </div>
     </div>
 
@@ -445,9 +438,7 @@ display: none;
                 <li id="usersManagementLink" style="display: none;"><a href="#" class="nav-link" data-page="usersPage">إدارة المستخدمين</a></li>
                 <li id="materialsManagementLink" style="display: none;"><a href="#" class="nav-link" data-page="materialsPage">إدارة المواد</a></li>
                 <li id="reportsLink" style="display: none;"><a href="#" class="nav-link" data-page="reportsPage">التقارير والتحليلات</a></li>
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-<li id="chemistrySectionLink" style="display: none;"><a href="#" class="nav-link" data-page="chemistryPage">قسم الكيمياء</a></li>
+                <li id="chemistrySectionLink" style="display: none;"><a href="#" class="nav-link" data-page="chemistryPage">قسم الكيمياء</a></li>
                 <li id="warehouseSectionLink" style="display: none;"><a href="#" class="nav-link" data-page="warehousePage">المخزن</a></li>
             </ul>
         </div>
@@ -532,9 +523,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
                     <h2>إدارة المستخدمين</h2>
                 </div>
                 <div class="action-buttons">
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-<button class="btn btn-primary" id="addUserBtn">إضافة مستخدم</button>
+                    <button class="btn btn-primary" id="addUserBtn">إضافة مستخدم</button>
                 </div>
                 <table>
                     <thead>
@@ -610,9 +599,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
                             <th>المختبر</th>
                             <th>الكمية</th>
                             <th>تاريخ الانتهاء</th>
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-<th>الحالة</th>
+                            <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -683,9 +670,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
                         <span>إلى</span>
                         <input type="date" id="endDate">
                     </div>
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-<button class="btn btn-primary" id="generateReportBtn">إنشاء التقرير</button>
+                    <button class="btn btn-primary" id="generateReportBtn">إنشاء التقرير</button>
                     <div id="reportResults" style="margin-top: 20px;">
                         <!-- سيتم عرض نتائج التقرير هنا -->
                     </div>
@@ -768,9 +753,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
                             <div class="form-group">
                                 <label for="materialType">نوع المادة</label>
                                 <select id="materialType" required>
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-<option value="standard">مادة قياسية</option>
+                                    <option value="standard">مادة قياسية</option>
                                     <option value="chemical">مادة كيميائية</option>
                                 </select>
                             </div>
@@ -850,9 +833,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
         // بيانات التطبيق
         let currentUser = null;
         let materials = JSON.parse(localStorage.getItem('materials')) || [];
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-let users = JSON.parse(localStorage.getItem('users')) || [
+        let users = JSON.parse(localStorage.getItem('users')) || [
             { 
                 username: 'admin', 
                 password: 'admin123', 
@@ -918,10 +899,9 @@ let users = JSON.parse(localStorage.getItem('users')) || [
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const userType = document.getElementById('userType').value;
             
-            // التحقق من بيانات المستخدم
-            const user = users.find(u => u.username === username && u.password === password && u.type === userType);
+            // التحقق من بيانات المستخدم - التصحيح هنا
+            const user = users.find(u => u.username === username && u.password === password);
             
             if (user) {
                 currentUser = user;
@@ -936,6 +916,14 @@ let users = JSON.parse(localStorage.getItem('users')) || [
                 if (currentUser.type === 'doctor') {
                     loadLabMaterials();
                 }
+                
+                // تسجيل نشاط الدخول
+                activities.push({
+                    action: 'تسجيل دخول',
+                    user: currentUser.name,
+                    date: new Date().toLocaleDateString('ar-EG')
+                });
+                localStorage.setItem('activities', JSON.stringify(activities));
             } else {
                 alert('بيانات الدخول غير صحيحة!');
             }
@@ -946,11 +934,10 @@ let users = JSON.parse(localStorage.getItem('users')) || [
             userNameDisplay.textContent = currentUser.name;
             userRoleDisplay.textContent = getRoleName(currentUser.type);
             userRoleDisplay.className = 'user-role role-' + currentUser.type;
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-// عرض المختبر إذا كان دكتور
+            
+            // عرض المختبر إذا كان دكتور
             if (currentUser.type === 'doctor' && currentUser.lab) {
-                userLabDisplay.innerHTML = <span class="lab-badge lab-${currentUser.lab}">المختبر ${currentUser.lab}</span>;
+                userLabDisplay.innerHTML = `<span class="lab-badge lab-${currentUser.lab}">المختبر ${currentUser.lab}</span>`;
             } else {
                 userLabDisplay.innerHTML = '';
             }
@@ -1040,9 +1027,7 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
         }
 
         // تحميل جدول المستخدمين (للمدير)
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-function loadUsersTable() {
+        function loadUsersTable() {
             const usersTable = document.getElementById('usersTable');
             usersTable.innerHTML = '';
             
@@ -1096,7 +1081,7 @@ function loadUsersTable() {
             
             if (userMaterials.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = <td colspan="10" style="text-align: center;">لا توجد مواد مضافة</td>;
+                row.innerHTML = `<td colspan="10" style="text-align: center;">لا توجد مواد مضافة</td>`;
                 warehouseMaterialsTable.appendChild(row);
                 return;
             }
@@ -1130,11 +1115,8 @@ function loadUsersTable() {
             labMaterialsTable.innerHTML = '';
             
             if (labMaterials.length === 0) {
-                const row = document.
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-createElement('tr');
-                row.innerHTML = <td colspan="5" style="text-align: center;">لا توجد مواد في هذا المختبر</td>;
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="5" style="text-align: center;">لا توجد مواد في هذا المختبر</td>`;
                 labMaterialsTable.appendChild(row);
                 return;
             }
@@ -1218,7 +1200,7 @@ createElement('tr');
             
             // تسجيل النشاط
             activities.push({
-                action: إضافة مادة جديدة: ${material.name},
+                action: `إضافة مادة جديدة: ${material.name}`,
                 user: currentUser.name,
                 date: new Date().toLocaleDateString('ar-EG')
             });
@@ -1236,9 +1218,7 @@ createElement('tr');
             
             const material = {
                 id: generateId(),
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-name: document.getElementById('newMaterialName').value,
+                name: document.getElementById('newMaterialName').value,
                 type: document.getElementById('newMaterialType').value,
                 lab: document.getElementById('newMaterialLab').value,
                 quantity: document.getElementById('newMaterialQuantity').value,
@@ -1252,7 +1232,7 @@ name: document.getElementById('newMaterialName').value,
             
             // تسجيل النشاط
             activities.push({
-                action: إضافة مادة جديدة: ${material.name},
+                action: `إضافة مادة جديدة: ${material.name}`,
                 user: currentUser.name,
                 date: new Date().toLocaleDateString('ar-EG')
             });
@@ -1282,7 +1262,7 @@ name: document.getElementById('newMaterialName').value,
             
             // تسجيل النشاط
             activities.push({
-                action: إضافة مستخدم جديد: ${user.name},
+                action: `إضافة مستخدم جديد: ${user.name}`,
                 user: currentUser.name,
                 date: new Date().toLocaleDateString('ar-EG')
             });
@@ -1315,7 +1295,7 @@ name: document.getElementById('newMaterialName').value,
             
             // تسجيل النشاط
             activities.push({
-                action: إضافة مادة كيميائية: ${material.name},
+                action: `إضافة مادة كيميائية: ${material.name}`,
                 user: currentUser.name,
                 date: new Date().toLocaleDateString('ar-EG')
             });
@@ -1334,10 +1314,8 @@ name: document.getElementById('newMaterialName').value,
                 localStorage.setItem('materials', JSON.stringify(materials));
                 
                 // تسجيل النشاط
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-activities.push({
-                    action: حذف مادة,
+                activities.push({
+                    action: `حذف مادة`,
                     user: currentUser.name,
                     date: new Date().toLocaleDateString('ar-EG')
                 });
@@ -1369,7 +1347,7 @@ activities.push({
                 
                 // تسجيل النشاط
                 activities.push({
-                    action: حذف مستخدم,
+                    action: `حذف مستخدم`,
                     user: currentUser.name,
                     date: new Date().toLocaleDateString('ar-EG')
                 });
@@ -1440,9 +1418,7 @@ activities.push({
                 // تحميل البيانات حسب الصفحة
                 if (pageId === 'warehousePage' && currentUser.type === 'self') {
                     loadUserMaterials();
-
-Iraq Mohammed, [10/21/2025 9:13 PM]
-} else if (pageId === 'chemistryPage' && currentUser.type === 'doctor') {
+                } else if (pageId === 'chemistryPage' && currentUser.type === 'doctor') {
                     loadLabMaterials();
                 } else if (pageId === 'usersPage' && currentUser.type === 'admin') {
                     loadUsersTable();
@@ -1488,12 +1464,6 @@ Iraq Mohammed, [10/21/2025 9:13 PM]
             }
             
             if (!localStorage.getItem('activities')) {
-                // إضافة بعض الأنشطة الافتراضية
-                activities.push({
-                    action: 'تسجيل دخول',
-                    user: 'مدير النظام',
-                    date: new Date().toLocaleDateString('ar-EG')
-                });
                 localStorage.setItem('activities', JSON.stringify(activities));
             }
         }
