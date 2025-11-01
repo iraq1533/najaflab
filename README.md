@@ -357,6 +357,14 @@
         .lab-2-card { border-color: var(--lab2-color); }
         .lab-3-card { border-color: var(--lab3-color); }
         
+        .material-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--secondary-color);
+        }
+        
         /* أنماط الاستجابة للشاشات المختلفة */
         @media (max-width: 768px) {
             .sidebar {
@@ -388,6 +396,18 @@
                 margin-bottom: 5px;
             }
         }
+
+        .test-credentials {
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #f8f9fa; 
+            border-radius: 5px;
+            display: none; /* إخفاء بيانات الدخول */
+        }
+        
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-accepted { background-color: #d1ecf1; color: #0c5460; }
+        .status-rejected { background-color: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
@@ -406,7 +426,8 @@
                 </div>
                 <button type="submit" class="btn btn-block">دخول</button>
             </form>
-            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+            <!-- مربع بيانات الدخول مخفي -->
+            <div class="test-credentials">
                 <h4 style="margin-bottom: 10px;">بيانات الدخول للتجربة:</h4>
                 <p><strong>مدير النظام:</strong> admin / admin123</p>
                 <p><strong>دكتور 1:</strong> doctor1 / doctor123</p>
@@ -597,6 +618,7 @@
                             <th>اسم المادة</th>
                             <th>النوع</th>
                             <th>المختبر</th>
+                            <th>رقم الوارد</th>
                             <th>الكمية</th>
                             <th>تاريخ الانتهاء</th>
                             <th>الحالة</th>
@@ -682,30 +704,43 @@
                 <div class="page-header">
                     <h2>قسم الكيمياء - <span id="currentLabName"></span></h2>
                 </div>
+                
+                <!-- معلومات المادة المختارة -->
+                <div id="selectedMaterialInfo" class="material-info" style="display: none;">
+                    <h4>معلومات المادة المختارة</h4>
+                    <p><strong>اسم المادة:</strong> <span id="infoMaterialName"></span></p>
+                    <p><strong>رقم الوارد:</strong> <span id="infoSupplierNumber"></span></p>
+                    <p><strong>المختبر:</strong> <span id="infoLab"></span></p>
+                </div>
+                
                 <div class="form-container">
                     <form id="chemistryForm">
                         <div class="form-group">
-                            <label for="materialName">اسم المادة</label>
-                            <input type="text" id="materialName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="materialDescription">وصف المادة</label>
-                            <textarea id="materialDescription" rows="3" required></textarea>
+                            <label for="selectedMaterial">اختر المادة للفحص</label>
+                            <select id="selectedMaterial" required>
+                                <option value="">اختر المادة</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="analysisMethod">طريقة التحليل</label>
-                            <input type="text" id="analysisMethod" required>
+                            <select id="analysisMethod" required>
+                                <option value="">اختر طريقة التحليل</option>
+                                <option value="USp">USp</option>
+                                <option value="Bp">Bp</option>
+                                <option value="company">Company</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="materialStatus">حالة المادة</label>
                             <select id="materialStatus" required>
-                                <option value="active">نشطة</option>
-                                <option value="inactive">غير نشطة</option>
                                 <option value="pending">قيد المراجعة</option>
+                                <option value="accepted">مقبولة</option>
+                                <option value="rejected">مرفوضة</option>
                             </select>
                         </div>
                         <div class="action-buttons">
-                            <button type="submit" class="btn btn-success">إضافة المادة</button>
+                            <button type="submit" class="btn btn-success">إضافة نتيجة الفحص</button>
                         </div>
                     </form>
                 </div>
@@ -717,10 +752,11 @@
                         <thead>
                             <tr>
                                 <th>اسم المادة</th>
-                                <th>الوصف</th>
+                                <th>رقم الوارد</th>
                                 <th>طريقة التحليل</th>
                                 <th>الحالة</th>
                                 <th>تاريخ الإضافة</th>
+                                <th>تمت الإضافة بواسطة</th>
                             </tr>
                         </thead>
                         <tbody id="labMaterialsTable">
@@ -758,7 +794,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="materialLab">المختبر</label>
+                                <label for="materialLab">المختبر المستهدف</label>
                                 <select id="materialLab" required>
                                     <option value="1">المختبر الأول</option>
                                     <option value="2">المختبر الثاني</option>
@@ -782,8 +818,8 @@
                                 <input type="date" id="expiryDate" required>
                             </div>
                             <div class="form-group">
-                                <label for="supplier">المورد</label>
-                                <input type="text" id="supplier">
+                                <label for="supplierNumber">رقم الوارد</label>
+                                <input type="text" id="supplierNumber" required>
                             </div>
                             <div class="form-group">
                                 <label for="notes">ملاحظات</label>
@@ -810,12 +846,12 @@
                             <tr>
                                 <th>اسم المادة</th>
                                 <th>النوع</th>
-                                <th>المختبر</th>
+                                <th>المختبر المستهدف</th>
                                 <th>التصنيف</th>
                                 <th>الكمية</th>
                                 <th>تاريخ الاستلام</th>
                                 <th>تاريخ الانتهاء</th>
-                                <th>المورد</th>
+                                <th>رقم الوارد</th>
                                 <th>الحالة</th>
                                 <th>الإجراءات</th>
                             </tr>
@@ -893,6 +929,13 @@
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
 
+        // عناصر قسم الكيمياء
+        const selectedMaterial = document.getElementById('selectedMaterial');
+        const selectedMaterialInfo = document.getElementById('selectedMaterialInfo');
+        const infoMaterialName = document.getElementById('infoMaterialName');
+        const infoSupplierNumber = document.getElementById('infoSupplierNumber');
+        const infoLab = document.getElementById('infoLab');
+
         // أحداث تسجيل الدخول
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -900,8 +943,12 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            // التحقق من بيانات المستخدم - التصحيح هنا
+            console.log('محاولة دخول:', username, password);
+            
+            // التحقق من بيانات المستخدم
             const user = users.find(u => u.username === username && u.password === password);
+            
+            console.log('المستخدم الموجود:', user);
             
             if (user) {
                 currentUser = user;
@@ -915,6 +962,7 @@
                 }
                 if (currentUser.type === 'doctor') {
                     loadLabMaterials();
+                    loadUnprocessedMaterials();
                 }
                 
                 // تسجيل نشاط الدخول
@@ -928,6 +976,34 @@
                 alert('بيانات الدخول غير صحيحة!');
             }
         });
+
+        // التحميل التلقائي للمستخدم الافتراضي (للتجربة)
+        function autoLogin() {
+            // جرب الدخول تلقائياً كمستخدم admin
+            const username = 'admin';
+            const password = 'admin123';
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                loginPage.style.display = 'none';
+                dashboard.style.display = 'block';
+                updateUserDisplay();
+                updatePermissions();
+                loadDashboardData();
+                
+                // تسجيل نشاط الدخول
+                activities.push({
+                    action: 'تسجيل دخول تلقائي',
+                    user: currentUser.name,
+                    date: new Date().toLocaleDateString('ar-EG')
+                });
+                localStorage.setItem('activities', JSON.stringify(activities));
+                
+                console.log('تم الدخول تلقائياً كمدير النظام');
+            }
+        }
 
         // تحديث عرض معلومات المستخدم
         function updateUserDisplay() {
@@ -963,6 +1039,26 @@
             }
         }
 
+        // الحصول على اسم الحالة
+        function getStatusName(status) {
+            switch(status) {
+                case 'pending': return 'قيد المراجعة';
+                case 'accepted': return 'مقبولة';
+                case 'rejected': return 'مرفوضة';
+                default: return 'قيد المراجعة';
+            }
+        }
+
+        // الحصول على كلاس الحالة
+        function getStatusClass(status) {
+            switch(status) {
+                case 'pending': return 'status-pending';
+                case 'accepted': return 'status-accepted';
+                case 'rejected': return 'status-rejected';
+                default: return 'status-pending';
+            }
+        }
+
         // تحديث الصلاحيات بناءً على نوع المستخدم
         function updatePermissions() {
             // إخفاء جميع الروابط أولاً
@@ -989,6 +1085,40 @@
                 warehouseSectionLink.style.display = 'block';
             }
         }
+
+        // تحميل المواد غير المعالجة للدكتور
+        function loadUnprocessedMaterials() {
+            selectedMaterial.innerHTML = '<option value="">اختر المادة</option>';
+            
+            // المواد التي لم يتم فحصها بعد في مختبر الدكتور الحالي
+            const unprocessedMaterials = materials.filter(material => 
+                material.lab === currentUser.lab && 
+                !material.analysisMethod
+            );
+            
+            unprocessedMaterials.forEach(material => {
+                const option = document.createElement('option');
+                option.value = material.id;
+                option.textContent = `${material.name} - ${material.supplierNumber || 'بدون رقم وارد'}`;
+                selectedMaterial.appendChild(option);
+            });
+        }
+
+        // حدث عند اختيار مادة للفحص
+        selectedMaterial.addEventListener('change', function() {
+            const materialId = this.value;
+            if (materialId) {
+                const material = materials.find(m => m.id === materialId);
+                if (material) {
+                    infoMaterialName.textContent = material.name;
+                    infoSupplierNumber.textContent = material.supplierNumber || 'غير محدد';
+                    infoLab.textContent = getLabName(material.lab);
+                    selectedMaterialInfo.style.display = 'block';
+                }
+            } else {
+                selectedMaterialInfo.style.display = 'none';
+            }
+        });
 
         // تحميل إحصائيات المختبرات
         function loadLabsStats() {
@@ -1055,14 +1185,17 @@
             materials.forEach(material => {
                 const row = document.createElement('tr');
                 const statusClass = getMaterialStatusClass(material.expiryDate);
+                const statusText = getStatusName(material.status);
+                const statusStyle = getStatusClass(material.status);
                 
                 row.innerHTML = `
                     <td>${material.name}</td>
                     <td>${material.type === 'standard' ? 'قياسية' : 'كيميائية'}</td>
                     <td>${getLabName(material.lab)}</td>
+                    <td>${material.supplierNumber || '-'}</td>
                     <td>${material.quantity}</td>
                     <td class="${statusClass}">${material.expiryDate}</td>
-                    <td>${getMaterialStatusText(material.expiryDate)}</td>
+                    <td class="${statusStyle}">${statusText}</td>
                     <td>
                         <button class="btn btn-danger btn-sm" onclick="deleteMaterial('${material.id}')">حذف</button>
                     </td>
@@ -1089,6 +1222,8 @@
             userMaterials.forEach(material => {
                 const row = document.createElement('tr');
                 const statusClass = getMaterialStatusClass(material.expiryDate);
+                const statusText = getStatusName(material.status);
+                const statusStyle = getStatusClass(material.status);
                 
                 row.innerHTML = `
                     <td>${material.name}</td>
@@ -1098,8 +1233,8 @@
                     <td>${material.quantity}</td>
                     <td>${material.receiveDate}</td>
                     <td class="${statusClass}">${material.expiryDate}</td>
-                    <td>${material.supplier || '-'}</td>
-                    <td>${getMaterialStatusText(material.expiryDate)}</td>
+                    <td>${material.supplierNumber || '-'}</td>
+                    <td class="${statusStyle}">${statusText}</td>
                     <td>
                         <button class="btn btn-danger btn-sm" onclick="deleteMaterial('${material.id}')">حذف</button>
                     </td>
@@ -1116,19 +1251,23 @@
             
             if (labMaterials.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="5" style="text-align: center;">لا توجد مواد في هذا المختبر</td>`;
+                row.innerHTML = `<td colspan="6" style="text-align: center;">لا توجد مواد في هذا المختبر</td>`;
                 labMaterialsTable.appendChild(row);
                 return;
             }
             
             labMaterials.forEach(material => {
                 const row = document.createElement('tr');
+                const statusText = getStatusName(material.status);
+                const statusStyle = getStatusClass(material.status);
+                
                 row.innerHTML = `
                     <td>${material.name}</td>
-                    <td>${material.description || '-'}</td>
-                    <td>${material.analysisMethod || '-'}</td>
-                    <td>${material.status || 'نشطة'}</td>
+                    <td>${material.supplierNumber || '-'}</td>
+                    <td>${material.analysisMethod || 'لم يتم الفحص'}</td>
+                    <td class="${statusStyle}">${statusText}</td>
                     <td>${material.addedDate}</td>
+                    <td>${material.addedBy || 'غير معروف'}</td>
                 `;
                 labMaterialsTable.appendChild(row);
             });
@@ -1189,10 +1328,11 @@
                 quantity: document.getElementById('quantity').value,
                 receiveDate: document.getElementById('receiveDate').value,
                 expiryDate: document.getElementById('expiryDate').value,
-                supplier: document.getElementById('supplier').value,
+                supplierNumber: document.getElementById('supplierNumber').value,
                 notes: document.getElementById('notes').value,
                 addedBy: currentUser.username,
-                addedDate: new Date().toISOString().split('T')[0]
+                addedDate: new Date().toISOString().split('T')[0],
+                status: 'pending'
             };
             
             materials.push(material);
@@ -1200,7 +1340,7 @@
             
             // تسجيل النشاط
             activities.push({
-                action: `إضافة مادة جديدة: ${material.name}`,
+                action: `إضافة مادة جديدة: ${material.name} للمختبر ${getLabName(material.lab)}`,
                 user: currentUser.name,
                 date: new Date().toLocaleDateString('ar-EG')
             });
@@ -1224,7 +1364,8 @@
                 quantity: document.getElementById('newMaterialQuantity').value,
                 expiryDate: document.getElementById('newMaterialExpiry').value,
                 addedBy: currentUser.username,
-                addedDate: new Date().toISOString().split('T')[0]
+                addedDate: new Date().toISOString().split('T')[0],
+                status: 'pending'
             };
             
             materials.push(material);
@@ -1275,35 +1416,43 @@
             loadLabsStats();
         });
 
-        // إضافة مادة في قسم الكيمياء (دكتور)
+        // إضافة نتيجة فحص في قسم الكيمياء (دكتور)
         document.getElementById('chemistryForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const material = {
-                id: generateId(),
-                name: document.getElementById('materialName').value,
-                description: document.getElementById('materialDescription').value,
-                analysisMethod: document.getElementById('analysisMethod').value,
-                status: document.getElementById('materialStatus').value,
-                lab: currentUser.lab,
-                addedBy: currentUser.username,
-                addedDate: new Date().toISOString().split('T')[0]
-            };
+            const materialId = document.getElementById('selectedMaterial').value;
+            if (!materialId) {
+                alert('الرجاء اختيار مادة للفحص');
+                return;
+            }
             
-            materials.push(material);
+            const materialIndex = materials.findIndex(m => m.id === materialId);
+            if (materialIndex === -1) {
+                alert('المادة المختارة غير موجودة');
+                return;
+            }
+            
+            // تحديث بيانات المادة
+            materials[materialIndex].analysisMethod = document.getElementById('analysisMethod').value;
+            materials[materialIndex].status = document.getElementById('materialStatus').value;
+            materials[materialIndex].examinedBy = currentUser.username;
+            materials[materialIndex].examinedDate = new Date().toISOString().split('T')[0];
+            
             localStorage.setItem('materials', JSON.stringify(materials));
             
             // تسجيل النشاط
             activities.push({
-                action: `إضافة مادة كيميائية: ${material.name}`,
+                action: `فحص مادة: ${materials[materialIndex].name} - ${materials[materialIndex].analysisMethod}`,
                 user: currentUser.name,
                 date: new Date().toLocaleDateString('ar-EG')
             });
             localStorage.setItem('activities', JSON.stringify(activities));
             
-            alert('تم إضافة المادة بنجاح!');
+            alert('تم إضافة نتيجة الفحص بنجاح!');
             document.getElementById('chemistryForm').reset();
+            selectedMaterialInfo.style.display = 'none';
             loadLabMaterials();
+            loadUnprocessedMaterials();
             loadDashboardData();
         });
 
@@ -1328,6 +1477,7 @@
                     loadUserMaterials();
                 } else if (currentUser.type === 'doctor') {
                     loadLabMaterials();
+                    loadUnprocessedMaterials();
                 }
                 loadDashboardData();
                 alert('تم حذف المادة بنجاح!');
@@ -1420,6 +1570,7 @@
                     loadUserMaterials();
                 } else if (pageId === 'chemistryPage' && currentUser.type === 'doctor') {
                     loadLabMaterials();
+                    loadUnprocessedMaterials();
                 } else if (pageId === 'usersPage' && currentUser.type === 'admin') {
                     loadUsersTable();
                 } else if (pageId === 'materialsPage' && currentUser.type === 'admin') {
@@ -1466,6 +1617,9 @@
             if (!localStorage.getItem('activities')) {
                 localStorage.setItem('activities', JSON.stringify(activities));
             }
+            
+            // محاولة الدخول التلقائي (يمكن إزالة هذا السطر إذا أردت)
+            autoLogin();
         }
 
         // تشغيل التطبيق
